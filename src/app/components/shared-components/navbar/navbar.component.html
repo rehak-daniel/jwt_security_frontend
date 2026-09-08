@@ -1,0 +1,14 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <div class="d-flex" role="search">
+      @if (!isSignInPage()) {
+      <button routerLink="login" class="btn btn-outline-primary ms-2">Log in</button>
+      }
+
+      @if (!isRegisterPage()) {
+      <button routerLink="register" class="btn btn-outline-secondary ms-2">Register</button>
+      }
+    </div>
+  </div>
+</nav>
