@@ -22,7 +22,13 @@ export class LoginComponent {
   onLogin(): void {
     this.errorMessage.set(null);
     this.authService.login({ username: this.username, password: this.password }).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
+      next: () => {
+        if (this.authService.hasRole('ROLE_ADMIN')) {
+        this.router.navigate(['/admindashboard']);
+      } else {
+        this.router.navigate(['/dashboard']);
+      }
+    },
       error: () => this.errorMessage.set('Invalid username or password!')
     });
   }

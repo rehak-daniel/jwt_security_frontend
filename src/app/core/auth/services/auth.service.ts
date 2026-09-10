@@ -1,6 +1,7 @@
 import { Injectable, signal } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, tap } from "rxjs";
+import { jwtDecode } from "jwt-decode";
 
 export interface AuthRequest {
     username: string;
@@ -11,12 +12,20 @@ export interface AuthResponse {
     token: string;
 }
 
+export interface JwtPayload {
+  sub: string;
+  roles?: string[];
+  authorities?: string[];
+  iat?: number;
+  exp?: number;
+}
+
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
     private apiUrl = 'http://localhost:8080/api/user';
-    
+
     public isLoggedIn = signal(this.hasToken());
 
     constructor(private http: HttpClient) {}
@@ -47,5 +56,24 @@ export class AuthService {
 
   private hasToken(): boolean {
     return !!this.getToken();
+  }
+
+
+  getUserRoles(): string[] {
+    const token = this.getToken();
+    if (!token) return [];
+
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+      console.log('Decoded token:', decoded);
+      return decoded.roles || decoded.authorities || [];
+    } catch (e) {
+      console.error('Token decoding error:', e);
+      return [];
+    }
+  }
+
+  hasRole(role: string): boolean {
+    return this.getUserRoles().includes(role);
   }
 }
