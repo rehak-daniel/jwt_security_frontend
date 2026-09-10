@@ -1,13 +1,14 @@
-<body class="d-flex justify-content-center min-vh-100 bg-body-tertiary">
-    <main class="form-signin w-100 p-4 p-sm-5 mt-5 bg-body rounded-4 shadow align-self-start" style="max-width: 380px;">
+<body class="d-flex justify-content-center min-vh-100 bg-body-secondary">
+    <main class="form-signin w-100 p-4 p-sm-5 mt-5 bg-body rounded-4 shadow align-self-start position-relative" style="max-width: 380px;">
         <form>
             <h1 class="h3 mb-3 fw-normal">Please log in</h1>
-            <div class="form-floating"> <input type="email" class="form-control" id="floatingInput"
-                    placeholder="name@example.com"> <label for="floatingInput">Email address</label> </div>
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-3" aria-label="Close" routerLink="/"></button>
+            <div class="form-floating"> <input type="username" class="form-control" id="floatingInput"
+                    placeholder="Username"> <label for="floatingInput">Username</label> </div>
             <div class="form-floating mt-1"> <input type="password" class="form-control" id="floatingPassword"
                     placeholder="Password"> <label for="floatingPassword">Password</label> </div>
             <button class="btn btn-primary mt-2 w-100 py-2" type="submit">Log in</button>
-            <button class="btn btn-secondary mt-2 w-100 py-2" type="submit">Register</button>
+            <button class="btn btn-secondary mt-2 w-100 py-2" type="button" routerLink="/register">Register</button>
         </form>
     </main>
 </body>
