@@ -1,7 +1,9 @@
 import { Injectable, signal } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { Router } from "@angular/router";
 import { Observable, tap } from "rxjs";
 import { jwtDecode } from "jwt-decode";
+
 
 export interface AuthRequest {
     username: string;
@@ -28,7 +30,7 @@ export class AuthService {
 
     public isLoggedIn = signal(this.hasToken());
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private router: Router) {}
 
     login(credentials: AuthRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
@@ -48,6 +50,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('jwt_token');
     this.isLoggedIn.set(false);
+    this.router.navigate(['/']);
   }
 
   getToken(): string | null {
@@ -65,7 +68,6 @@ export class AuthService {
 
     try {
       const decoded = jwtDecode<JwtPayload>(token);
-      console.log('Decoded token:', decoded);
       return decoded.roles || decoded.authorities || [];
     } catch (e) {
       console.error('Token decoding error:', e);

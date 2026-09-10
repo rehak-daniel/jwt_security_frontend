@@ -3,6 +3,8 @@ import {Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs/operators';
 import { NavigationEnd } from '@angular/router';
+import { AuthService } from '../../../core/auth/services/auth.service';
+
 
 @Component({
   imports: [RouterLink],
@@ -12,6 +14,7 @@ import { NavigationEnd } from '@angular/router';
 })
 export class NavbarComponent {
   public router = inject(Router);
+  private authService = inject(AuthService);
 
   private currentUrl = toSignal(
     this.router.events.pipe(
@@ -23,4 +26,10 @@ export class NavbarComponent {
 
   isRegisterPage = computed(() => this.currentUrl() === '/register');
   isSignInPage = computed(() => this.currentUrl() === '/login');
+
+  isLoggedIn = computed(() => this.authService.isLoggedIn());
+
+  onLogout() {
+    this.authService.logout();
+  }
 }
