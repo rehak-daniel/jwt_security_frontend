@@ -8,27 +8,35 @@
             <div class="mb-3">
                 <label for="exampleInputUsername" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" [(ngModel)]="username" name="username"
-                    placeholder="Enter your username" aria-describedby="usernameHelp">
+                    placeholder="Enter your username" required minlength="3" maxlength="20" autocomplete="username">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password"
-                    placeholder="••••••••">
+                    placeholder="••••••••" required minlength="6" autocomplete="new-password">
                 <div class="col-auto">
                     <span id="passwordHelpInline" class="form-text">
-                        Must be 8-20 characters long.
+                        Must be at least 6 characters long.
                     </span>
                 </div>
                 <label class="form-label mb-2 mt-2" for="confirmPassword">Confirm Password</label>
                 <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="confirmPassword"
-                    name="confirmPassword" placeholder="••••••••">
+                    name="confirmPassword" placeholder="••••••••" required autocomplete="new-password">
             </div>
             @if (errorMessage()) {
             <div class="alert alert-danger text-center" role="alert">
                 {{ errorMessage() }}
             </div>
             }
-            <button class="btn btn-primary mt-2 w-100 py-2" type="submit">Register</button>
+
+            <button class="btn btn-primary mt-2 w-100 py-2" type="submit" [disabled]="isLoading() || isFormInvalid()">
+                @if (isLoading()) {
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Registering...
+                } @else {
+                    Register
+                }
+            </button>
         </form>
     </main>
 </body>

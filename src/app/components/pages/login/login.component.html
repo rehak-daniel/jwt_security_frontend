@@ -5,7 +5,7 @@
             <h1 class="h3 mb-3 fw-normal">Please log in</h1>
             <button type="button" class="btn-close position-absolute top-0 end-0 m-3" aria-label="Close"
                 routerLink="/"></button>
-            <div class="form-floating"> <input type="username" class="form-control" id="username" placeholder="Username"
+            <div class="form-floating"> <input type="text" class="form-control" id="username" placeholder="Username"
                     [(ngModel)]="username" name="username"> <label for="username">Username</label> </div>
             <div class="form-floating mt-1"> <input type="password" class="form-control" id="password"
                     placeholder="Password" [(ngModel)]="password" name="password"> <label
@@ -15,7 +15,15 @@
                 {{ errorMessage() }}
             </div>
             }
-            <button class="btn btn-primary mt-2 w-100 py-2" type="submit">Log in</button>
+            <button class="btn btn-primary w-100 py-2 mt-3" type="submit" [disabled]="isLoading() || isFormInvalid()">
+                @if (isLoading()) {
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Logging in...
+                } @else {
+                Login
+                }
+            </button>
+
             <button class="btn btn-secondary mt-2 w-100 py-2" type="button" routerLink="/register">Register</button>
         </form>
     </main>

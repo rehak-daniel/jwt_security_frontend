@@ -28,7 +28,7 @@ export interface JwtPayload {
 export class AuthService {
     private apiUrl = 'http://localhost:8080/api/user';
 
-    public isLoggedIn = signal(this.hasToken());
+    public isLoggedIn = signal(this.isAuthenticated());
 
     constructor(private http: HttpClient, private router: Router) {}
 
@@ -57,8 +57,24 @@ export class AuthService {
     return localStorage.getItem('jwt_token');
   }
 
-  private hasToken(): boolean {
-    return !!this.getToken();
+  isAuthenticated(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+      if (decoded.exp) {
+        const bufferMs = 10000;
+        const isExpired = (decoded.exp * 1000) - bufferMs < Date.now();
+        if (isExpired) {
+          this.logout();
+          return false;
+        }
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
 
